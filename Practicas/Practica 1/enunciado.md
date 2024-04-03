@@ -146,3 +146,22 @@ patch -p<nivel> < archivo-parche
 #### c. ¿El kernel puede acceder al contenido de regiones de memoria creadas con esta system call? El siguiente artículo contiene bastante información al respecto: https://lwn.net/Articles/865256/
 
 - No, estas regiones están protegidas y son inaccesibles para otros procesos (incluido el propio kernel). Solo el proceso creador puede acceder a su contenido.
+
+## B - Ejercicio taller: Compilación del kernel Linux
+
+1. Ir al directorio de la cátedra: `cd kernel`
+2. Descomprimir el archivo con el código fuente del kernel Linux 6.7: `tar -xvf linux-6.7.tar.xz`
+3. Aplicar el parche 6.8 al código: `xzcat ~/kernel/patch-6.8.xz | patch -p1`
+  - `xzcat` es similar al `cat`pero para los archivos `.xz`, toma el archivo comprimido y lo descomprime, escribiendo la salida en la salida estándar.
+  - `patch` es el comando que aplica un parche específico. La opción `-p1` indica al comando patch que elimine el primer nivel de directorios de la ruta especificada en el archivo de parche (básicamente ajusta las rutas de los archivos correctamente).
+4. Copiar el archivo de configuración del kernel actual desde `/boot` a `$HOME/kernel/linux-6.7/` con el nombre `.config`: `$ cp /boot/config-$(uname -r) $HOME/kernel/linux-6.7/.config`
+5. Tomamos la configuración antigua que acabamos de copiar y la actualizamos con valores por defecto para las opciones de configuración nuevas: `make olddefconfig`
+6. Configurar como módulos activos los que están cargados actualmente y deshabilitar los no usados: `make localmodconfig`
+7. Configuración personalizada del kernel: `make menuconfig`
+8. Realizamos la compilación: `make -j2` (la VM tiene dos cores).
+  - Es posible que salte el error de openssl, para eso hacemos `# apt-get install libssl-dev`
+  - También tuve un error de espacio de memoria, por lo que le asigne una RAM de 4GB
+9. Instalar los módulos del kernel (`/lib/modules/`): `make modules_install`
+10. Instalar los archivos principales del kernel (junto con otras tareas): `make install`
+  - Las opciones de las versiones del kernel están en la 2da opción.
+
