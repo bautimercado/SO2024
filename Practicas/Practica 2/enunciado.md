@@ -52,7 +52,7 @@ int main() {
 
 - La macro `asmlinkage` se usa para definir las funciones del kernel que implementan las System Calls.
 - Deben seguir una convención específica para garantizar compatibilidad y portabilidad.
-- Se define en `include/linux/kernel.h` del código fuente del kernel (aunque su definición varía según la arquitectura y compilador usado). Su propósito es que las funciones que implementan las System Calls sigan dichas convenciones.
+- Se define en `<kernel_code>/include/linux/syscalls.h` del código fuente del kernel (aunque su definición varía según la arquitectura y compilador usado). Su propósito es que las funciones que implementan las System Calls sigan dichas convenciones.
 - Ejemplo:
   - `sys_write` es la implementación de la System Call `write`.
 ```c
